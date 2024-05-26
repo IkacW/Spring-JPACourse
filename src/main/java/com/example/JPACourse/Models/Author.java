@@ -1,26 +1,24 @@
 package com.example.JPACourse.Models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Entity
-public class Author {
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "author_sequence"
-    )
-    @SequenceGenerator(
-            name = "author_sequence",
-            sequenceName = "author_name",
-            allocationSize = 1
-    )
-    private Integer id;
+public class Author extends BaseEntity {
+
     private String firstName;
     private String lastName;
     @Column(
@@ -28,7 +26,7 @@ public class Author {
             nullable = false
     )
     private String email;
-    private String age;
+    private int age;
     @Column(
             updatable = false,
             nullable = false
@@ -38,4 +36,9 @@ public class Author {
             insertable = false
     )
     private LocalDateTime lastModified;
+
+    @ManyToMany(
+            mappedBy = "authors"
+    )
+    private List<Course> courses;
 }
